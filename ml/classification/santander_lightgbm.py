@@ -98,7 +98,7 @@ if __name__ == "__main__":
         #features_importance
         feature_importance_df = pd.DataFrame()
         feature_importance_df["Feature"] = features
-        feature_importance_df["importance"] = clf.feature_importances_
+        feature_importance_df["importance"] = clf.feature_importance()
         cols = (feature_importance_df[["Feature", "importance"]]
                 .groupby("Feature").mean()
                 .sort_values(by="importance", ascending=False)[:150].index)
