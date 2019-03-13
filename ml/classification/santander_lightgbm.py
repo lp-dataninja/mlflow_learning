@@ -94,3 +94,5 @@ if __name__ == "__main__":
         mlflow.log_metric(" f1", f1)
         #save model
         mlflow.sklearn.log_model(clf, "model")
+        #save inputdata
+        mlflow.log_artifact("train.csv.zip")
