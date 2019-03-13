@@ -19,7 +19,7 @@ def eval_metrics(actual, pred):
 #starting point
 if __name__ == "__main__":
     #reading dataset
-    train_df = pd.read_csv("train.csv")
+    train_df = pd.read_csv("train.csv.zip")
     train_df_sample = train_df.sample(100000)
     train_df_sample['target'].value_counts()
 
