@@ -1,6 +1,8 @@
 #Load packages
 
 import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 import lightgbm as lgb
 from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score, f1_score
@@ -92,7 +94,26 @@ if __name__ == "__main__":
         mlflow.log_metric("precision", precision)
         mlflow.log_metric("recall", recall)
         mlflow.log_metric(" f1", f1)
+        
+        #features_importance
+        feature_importance_df = pd.DataFrame()
+        feature_importance_df["Feature"] = features
+        feature_importance_df["importance"] = clf.feature_importances_
+        cols = (feature_importance_df[["Feature", "importance"]]
+                .groupby("Feature").mean()
+                .sort_values(by="importance", ascending=False)[:150].index)
+        best_features = feature_importance_df.loc[feature_importance_df.Feature.isin(cols)]
+
+        plt.figure(figsize=(14,28))
+        sns.barplot(x="importance", y="Feature", data=best_features.sort_values(by="importance",ascending=False))
+        plt.title('Features importance')
+        plt.tight_layout()
+        plt.savefig('features_importance.png')
+        #save features_importance
+        mlflow.log_artifact("features_importance.png")
+       
         #save model
         mlflow.sklearn.log_model(clf, "model")
+        
         #save input_data
         mlflow.log_artifact("train.csv.zip")
