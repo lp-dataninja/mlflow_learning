@@ -91,6 +91,6 @@ if __name__ == "__main__":
         mlflow.log_metric("Acc", acc)
         mlflow.log_metric("precision", precision)
         mlflow.log_metric("recall", recall)
-        mlflow.log_metric(" f1:", f1)
+        mlflow.log_metric(" f1", f1)
         #save model
         mlflow.sklearn.log_model(clf, "model")
