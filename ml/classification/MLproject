@@ -1,4 +1,4 @@
-name: tutorial
+name: classification
 
 conda_env: conda.yaml
 
