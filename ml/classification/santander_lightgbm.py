@@ -81,10 +81,10 @@ if __name__ == "__main__":
 
         (acc, precision, recall, f1) = eval_metrics(y_test, y_pred)
         #print metrics
-        print(" Acc: " % acc)
-        print(" precision: " % precision)
-        print(" recall: " % recall)
-        print(" f1: %s" % f1)
+        print(" Acc: " , acc)
+        print(" precision: " , precision)
+        print(" recall: " , recall)
+        print(" f1: %s" , f1)
 
         #log hyperparamter and metrics
         mlflow.log_param("num_leaves", 6)
