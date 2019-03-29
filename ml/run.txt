@@ -1,0 +1,77 @@
+
+sudo apt-get update
+wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+sh Miniconda3-latest-Linux-x86_64.sh
+source ~/.bashrc
+pip install mlflow
+Dowload dataset from kaggle
+https://www.kaggle.com/c/santander-customer-transaction-prediction
+pip install kaggle
+
+vi ~/.kaggle/kaggle.json
+chmod 600 ~/.kaggle/kaggle.json
+kaggle competitions download santander-customer-transaction-prediction
+
+mlflow server --host 0.0.0.0
+
+http://34.203.232.2:5000/
+
+Copy code from github
+
+https://raw.githubusercontent.com/lp-dataninja/mlflow_learning/master/ml/classification/santander_lightgbm.py
+
+pip install seaborn
+pip install lightgbm
+python santander_lightgbm.py
+
+
+API
+
+https://github.com/lp-dataninja/mlflow_learning/tree/master/ml/regression
+copy dataset and code into server
+
+python train.py
+mlflow pyfunc serve --port 1234  -r 3775f9967ac843b09c5dcae95fa12719 -m model
+curl -X POST -H "Content-Type:application/json; format=pandas-split" --data '{"columns":["alcohol", "chlorides", "citric acid", "density", "fixed acidity", "free sulfur dioxide", "pH", "residual sugar", "sulphates", "total sulfur dioxide", "volatile acidity"],"data":[[12.8, 0.029, 0.48, 0.98, 6.2, 29, 3.33, 1.2, 0.39, 75, 0.66]]}' http://127.0.0.1:1234/invocations
+
+
+Deploy sklearn model into pyspark
+
+sudo add-apt-repository ppa:webupd8team/java -y
+sudo apt-get update
+sudo apt-get install oracle-java8-installer
+pip install pyspark
+pip install PyArrow
+
+start pyspark
+
+from pyspark.sql.types import *
+
+import mlflow
+import mlflow.pyfunc
+
+spark_df = spark.read.csv("wine-quality.csv",header = True)
+
+pyfunc_udf = (mlflow.pyfunc.spark_udf(spark=spark,
+                                                   path="model",
+                                                   run_id="3775f9967ac843b09c5dcae95fa12719",
+                                                   result_type=ArrayType(FloatType())))
+
+features = "alcohol", "chlorides", "citric acid", "density", "fixed acidity", "free sulfur dioxide", "pH", "residual sugar", "sulphates", "total sulfur dioxide", "volatile acidity"
+
+df = spark_df.withColumn("prediction", pyfunc_udf("alcohol", "chlorides", "citric acid", "density", "fixed acidity", "free sulfur dioxide", "pH", "residual sugar", "sulphates", "total sulfur dioxide", "volatile acidity"))
+
+
+
+Run github code
+
+sudo apt-get install git
+
+
+mlflow run https://github.com/lp-dataninja/mlflow_learning#ml/regression -P alpha=0.4
+conda activate mlflow-cbb9443037d4445faeb96a6e146a9737e1867c69
+
+
+mlflow run https://github.com/lp-dataninja/mlflow_learning#ml/regression -v 21fa05e4541e8e4d8ec4a84c2fa213a204292b04 -P alpha=0.3 -P l1_ratio=0.3
+
+source deactivate
